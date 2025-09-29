@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { AuthContext } from "../context/AuthContext.jsx";
-import logoCafe from "../assets/logoCafe.png";
+import logoCafe from "../assets/LogoCafe.png";
 import Swal from "sweetalert2";
 import "../styles/header.css";
 
