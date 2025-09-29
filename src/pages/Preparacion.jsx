@@ -1,6 +1,6 @@
 import "../styles/preparacion.css";
 import cafeteraDomestica from "../assets/CafeteraDoméstica.png";
-import cafeteraElectrica from "../assets/cafeteraEléctrica.png";
+import cafeteraElectrica from "../assets/CafeteraEléctrica.png";
 import cafeteraItaliana from "../assets/CafeteraItaliana.png";
 import prensaFrancesa from "../assets/PrensaFrancesa.png";
 import maquinaExpreso from "../assets/MáquinaExpresso.png";
