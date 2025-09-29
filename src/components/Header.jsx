@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "../App.css";
-import logoCafe from "../assets/logoCafe.png";
+import logoCafe from "../assets/LogoCafe.png";
 import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import ShoppingHistory from "./ShoppingHistory";

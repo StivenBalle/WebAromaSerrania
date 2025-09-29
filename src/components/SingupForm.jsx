@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useAuth } from "../context/AuthContext";
-import logoCafe from "../assets/logoCafe.png";
+import logoCafe from "../assets/LogoCafe.png";
 import Swal from "sweetalert2";
 import { register } from "../api.js";
 import "../styles/header.css";

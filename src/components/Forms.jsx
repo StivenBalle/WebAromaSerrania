@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import logoCafe from "../assets/logoCafe.png";
+import logoCafe from "../assets/LogoCafe.png";
 import { useAuth } from "../context/AuthContext";
 
 export default function Forms() {
