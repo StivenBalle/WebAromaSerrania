@@ -14,9 +14,10 @@ const LoginForm = ({ switchToSignup }) => {
     const password = e.target.password_login.value;
 
     const res = await login(email, password);
+    console.log("Respuesta del login:", res);
 
     if (res.success) {
-      console.log(`El usuario, ${res.name} inicio sesión exitosamente`);
+      console.log(`El usuario, ${res.user?.name} inicio sesión exitosamente`);
     } else {
       Swal.fire("Error", res.error, "error");
     }
