@@ -42,7 +42,7 @@ export const AuthProvider = ({ children }) => {
           timer: 2000,
           showConfirmButton: false,
         }).then(() => {
-          window.location.reload(); // 🔹 Recargar la página tras el SweetAlert
+          window.location.reload();
         });
         return { success: true, user: data.user };
       }
@@ -67,7 +67,7 @@ export const AuthProvider = ({ children }) => {
       value={{
         user,
         loading,
-        login: loginUser, // 🔹 Renamed to avoid conflict with import
+        login: loginUser,
         logout,
         authModalOpen,
         openAuthModal,
