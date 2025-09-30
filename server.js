@@ -263,7 +263,7 @@ app.get("/api/config", (req, res) => {
 });
 
 // Stripe - Productos
-app.get("/api/products", async (req, res) => {
+app.get("/api/products", async (req, res, next) => {
   try {
     const productsRes = await stripe.products.list({ active: true });
     const pricesRes = await stripe.prices.list({ active: true });

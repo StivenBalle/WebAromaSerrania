@@ -7,6 +7,7 @@ import bolsaCafe from "../assets/Bolsa_café.png";
 import cafeRojo from "../assets/CaféRojo.jpeg";
 import bolsaPresentacion from "../assets/BolsaPresentación.jpeg";
 import tostado from "../assets/Tostado.jpeg";
+import { getConfig, getProducts, getProfile, createCheckout } from "../api";
 import "../App.css";
 
 function App() {
@@ -21,28 +22,14 @@ function App() {
     async function initApp() {
       try {
         // Obtener la clave pública de Stripe
-        const configRes = await fetch("/api/config");
-        if (!configRes.ok) {
-          throw new Error(
-            `Error ${configRes.status}: No se pudo cargar la configuración de Stripe`
-          );
-        }
-        const config = await configRes.json();
+        const config = await getConfig();
 
         // Inicializar Stripe
         const stripeInstance = window.Stripe(config.publishableKey);
         setStripe(stripeInstance);
 
         // Obtener productos y precios
-        const res = await fetch("/api/products", {
-          credentials: "include",
-        });
-        if (!res.ok) {
-          throw new Error(
-            `Error ${res.status}: No se pudieron cargar los productos`
-          );
-        }
-        const data = await res.json();
+        const data = await getProducts();
         console.log(
           "✅ Productos obtenidos:",
           data.products.length,
@@ -58,7 +45,6 @@ function App() {
       }
     }
 
-    // Asegurarse de que Stripe.js esté cargado
     if (window.Stripe) {
       initApp();
     } else {
@@ -72,36 +58,23 @@ function App() {
   // 🔹 Iniciar checkout
   const handleCheckout = async (priceId) => {
     try {
-      const res = await fetch("/api/auth/profile", {
-        method: "GET",
-        credentials: "include",
-      });
-      if (!res.ok) {
+      // Verificar sesión
+      await getProfile();
+
+      // Crear sesión de checkout
+      const session = await createCheckout(priceId);
+      window.location.href = session.url;
+    } catch (err) {
+      if (err.status === 401) {
         Swal.fire({
           icon: "warning",
           title: "Inicia sesión",
           text: "Debes iniciar sesión para comprar.",
           confirmButtonText: "Iniciar sesión",
-        }).then(() => {
-          openAuthModal();
-        });
+        }).then(() => openAuthModal());
         return;
       }
 
-      const response = await fetch("/api/create-checkout-session", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-        body: JSON.stringify({ priceId }),
-      });
-
-      if (!response.ok) {
-        throw new Error(`Error ${response.status}: No se pudo iniciar el pago`);
-      }
-
-      const session = await response.json();
-      window.location.href = session.url;
-    } catch (err) {
       console.error("❌ Error Stripe:", err.message);
       Swal.fire("Error", "No se pudo iniciar el pago", "error");
     }
@@ -118,8 +91,7 @@ function App() {
     const startPollingForNewProducts = () => {
       const interval = setInterval(async () => {
         try {
-          const response = await fetch("/api/products");
-          const data = await response.json();
+          const data = await getProducts();
           const currentProducts = data.products;
           const currentPrices = data.prices;
 
