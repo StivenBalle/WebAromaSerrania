@@ -6,7 +6,7 @@ dotenv.config({ path: path.resolve(process.cwd(), ".env") });
 
 export const {
   PORTG,
-  NODE_ENV = "development",
+  NODE_ENV,
   DB_HOST,
   DB_PORT,
   DB_USER,

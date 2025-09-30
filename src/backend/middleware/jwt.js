@@ -51,7 +51,7 @@ export function generateToken(user, res) {
   res.cookie("access_token", token, {
     httpOnly: true,
     secure: NODE_ENV === "production",
-    sameSite: "strict",
+    sameSite: "none",
     maxAge: 1000 * 60 * 60,
   });
 
