@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import Cafetera from "../components/Cafetera.jsx";
+import { getAdminOrders } from "../api.js";
 import Swal from "sweetalert2";
-import { getOrders } from "../api.js";
 import "../App.css";
 
 const AdminOrders = () => {
@@ -39,7 +39,7 @@ const AdminOrders = () => {
 
   const fetchOrders = async () => {
     try {
-      const data = await getOrders();
+      const data = await getAdminOrders();
       console.log("Órdenes cargadas:", data);
       setOrders(data.orders);
       setFilteredOrders(data.orders);
