@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Swal from "sweetalert2";
-import { useAuth } from "../context/AuthContext";
+import { useAuth } from "../../frontend/context/AuthContext";
 import logoCafe from "../assets/LogoCafe.png";
 import semillero from "../assets/Semillero.jpeg";
 import bolsaCafe from "../assets/Bolsa_café.png";

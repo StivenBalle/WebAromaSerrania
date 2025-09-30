@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useAuth } from "../context/AuthContext";
+import { useAuth } from "../context/AuthContext.jsx";
 import logoCafe from "../assets/LogoCafe.png";
 import Swal from "sweetalert2";
 import { register } from "../api.js";

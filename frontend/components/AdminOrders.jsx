@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
-import Cafetera from "../components/Cafetera.jsx";
+import Cafetera from "./Cafetera.jsx";
 import { getAdminOrders } from "../api.js";
 import Swal from "sweetalert2";
 import "../App.css";

@@ -5,7 +5,7 @@ import cafeteraItaliana from "../assets/CafeteraItaliana.png";
 import prensaFrancesa from "../assets/PrensaFrancesa.png";
 import maquinaExpreso from "../assets/MáquinaExpresso.png";
 import sifonjapones from "../assets/SifónJaponés.png";
-import Cafetera from "../components/Cafetera";
+import Cafetera from "../../frontend/components/Cafetera";
 import V60 from "../assets/V60.png";
 import chemex from "../assets/Chemex.png";
 

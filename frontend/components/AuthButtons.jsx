@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
-import { AuthContext } from "../context/AuthContext.jsx";
-import AuthModal from "../components/AuthModal.jsx";
+import { AuthContext } from "../../src/context/AuthContext.jsx";
+import AuthModal from "./AuthModal.jsx";
 import Swal from "sweetalert2";
 
 const AuthButtons = () => {

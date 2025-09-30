@@ -1,16 +1,16 @@
 import { Routes, Route, Form } from "react-router-dom";
-import Header from "./components/Header";
-import Footer from "./components/Footer";
-import Home from "./pages/Home";
-import Historia from "./pages/Historia";
-import Preparacion from "./pages/Preparacion";
-import Success from "./components/Success";
-import Cancel from "./components/Cancel";
-import Terminos from "./pages/Terminos";
-import NotFound from "./components/NotFound";
-import AdminOrders from "./components/AdminOrders";
-import { AuthProvider } from "./context/AuthContext";
-import AuthModal from "./components/AuthModal";
+import Header from "../frontend/components/Header";
+import Footer from "../frontend/components/Footer";
+import Home from "../frontend/pages/Home";
+import Historia from "../frontend/pages/Historia";
+import Preparacion from "../frontend/pages/Preparacion";
+import Success from "../frontend/components/Success";
+import Cancel from "../frontend/components/Cancel";
+import Terminos from "../frontend/pages/Terminos";
+import NotFound from "../frontend/components/NotFound";
+import AdminOrders from "../frontend/components/AdminOrders";
+import { AuthProvider } from "../frontend/context/AuthContext";
+import AuthModal from "../frontend/components/AuthModal";
 
 function App() {
   return (

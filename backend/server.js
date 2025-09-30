@@ -6,14 +6,14 @@ import passport from "passport";
 import path from "path";
 import { fileURLToPath } from "url";
 import Stripe from "stripe";
-import errorHandler from "./src/backend/middleware/errorHandler.js";
-import authRoutes from "./src/backend/routes/auth.js";
-import adminRoutes from "./src/backend/routes/admin.js";
-import shoppingRoutes from "./src/backend/routes/shopping.js";
-import { verifyToken } from "./src/backend/middleware/jwt.js";
-import pool from "./src/backend/db.js";
+import errorHandler from "../src/backend/middleware/errorHandler.js";
+import authRoutes from "../src/backend/routes/auth.js";
+import adminRoutes from "../src/backend/routes/admin.js";
+import shoppingRoutes from "../src/backend/routes/shopping.js";
+import { verifyToken } from "../src/backend/middleware/jwt.js";
+import pool from "../src/backend/db.js";
 import Twilio from "twilio";
-import "./src/backend/routes/loginGoogle.js";
+import "../src/backend/routes/loginGoogle.js";
 
 import {
   STRIPE_SECRET_KEY,
@@ -26,7 +26,7 @@ import {
   AUTH_TOKEN,
   TWILIO_PHONE_NUMBER,
   ADMIN_PHONE_NUMBER,
-} from "./src/backend/config.js";
+} from "../src/backend/config.js";
 
 // --- Configuración inicial ---
 const __filename = fileURLToPath(import.meta.url);

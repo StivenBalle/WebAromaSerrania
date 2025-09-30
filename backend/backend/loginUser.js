@@ -1,5 +1,5 @@
 import bcrypt from "bcrypt";
-import pool from "../backend/db.js";
+import pool from "./db.js";
 
 async function loginUser(email, password) {
   return new Promise((resolve, reject) => {
