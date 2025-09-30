@@ -1,7 +1,8 @@
 import express from "express";
 import bcrypt from "bcrypt";
 import loginUser from "../loginUser.js";
-import { generateToken, verifyToken } from "../middleware/jwt.js"; // Import verifyToken
+import { generateToken, verifyToken } from "../middleware/jwt.js";
+import { NODE_ENV } from "../config.js";
 import pool from "../db.js";
 
 const router = express.Router();

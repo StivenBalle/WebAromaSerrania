@@ -27,7 +27,6 @@ import {
   TWILIO_PHONE_NUMBER,
   ADMIN_PHONE_NUMBER,
 } from "./src/backend/config.js";
-import { exit } from "process";
 
 // --- Configuración inicial ---
 const __filename = fileURLToPath(import.meta.url);
