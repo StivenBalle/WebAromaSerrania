@@ -2,7 +2,6 @@ import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 import cookieParser from "cookie-parser";
-import session from "express-session";
 import passport from "passport";
 import path from "path";
 import { fileURLToPath } from "url";
@@ -28,6 +27,7 @@ import {
   TWILIO_PHONE_NUMBER,
   ADMIN_PHONE_NUMBER,
 } from "./src/backend/config.js";
+import { exit } from "process";
 
 // --- Configuración inicial ---
 const __filename = fileURLToPath(import.meta.url);
@@ -47,7 +47,6 @@ app.use(
 
 app.use(cookieParser());
 app.use(passport.initialize());
-app.use(passport.session());
 
 // --- Logger ---
 app.use((req, res, next) => {
