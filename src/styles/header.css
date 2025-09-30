@@ -1044,8 +1044,8 @@
 
   #signupForm {
     border-radius: 6px;
-    width: 80%;
-    max-width: 350px;
+    margin-left: 2rem;
+    max-width: 390px;
   }
 }
 

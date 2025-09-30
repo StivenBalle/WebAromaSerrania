@@ -17,12 +17,12 @@ function Historia() {
           <div className="historia-text">
             <h2>Nuestra Historia</h2>
             <p>
-              Luis Fernando Vélez se enamoró con el tema del café por una
+              Edwin Andrades se enamoró con el tema del café por una
               casualidad...
             </p>
             <p>
-              En su regreso a Bogotá, Luis Fernando trae consigo algunas de
-              estas cafeteras...
+              En su regreso a Bogotá, su esposa trae consigo algunas de estas
+              cafeteras...
             </p>
           </div>
           <img src={rolloFotos} alt="Historia Café" />
@@ -48,7 +48,7 @@ function Historia() {
 
       <section className="section">
         <div className="sostenibilidad">
-          <h2>Nuestro Informe De Sostenibilidad</h2>
+          <h2>Informe De Sostenibilidad</h2>
           <a
             href="../Informe de Sostenibilidad/Informe_Sostenibilidad_Cafe_Aroma_de_la_Serrania.pdf"
             className="download-button"
