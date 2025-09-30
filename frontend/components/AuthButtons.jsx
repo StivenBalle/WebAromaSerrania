@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { AuthContext } from "../../src/context/AuthContext.jsx";
+import { AuthContext } from "../../frontend/context/AuthContext.jsx";
 import AuthModal from "./AuthModal.jsx";
 import Swal from "sweetalert2";
 
