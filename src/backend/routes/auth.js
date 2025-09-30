@@ -28,7 +28,11 @@ router.post("/login", async (req, res) => {
 
 // Logout route
 router.post("/logout", (req, res) => {
-  res.clearCookie("access_token");
+  res.clearCookie("access_token", {
+    httpOnly: true,
+    secure: NODE_ENV === "production",
+    sameSite: "none",
+  });
   res.json({ message: "✅ Logout exitoso" });
 });
 
