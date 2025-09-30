@@ -55,5 +55,7 @@ export const getConfig = () => get("/api/config");
 
 export const getProducts = () => get("/api/products");
 
+export const logout = () => post("/api/auth/logout");
+
 export const createCheckout = (priceId) =>
   post("/api/create-checkout-session", { priceId });

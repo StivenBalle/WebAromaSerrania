@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
-import { login, getProfile } from "../api.js";
+import { login, getProfile, logout as apiLogout } from "../api.js";
 import Swal from "sweetalert2";
 
 export const AuthContext = createContext();
@@ -54,11 +54,12 @@ export const AuthProvider = ({ children }) => {
   };
 
   const logout = async () => {
-    await fetch("/api/auth/logout", {
-      method: "POST",
-      credentials: "include",
-    });
-    setUser(null);
+    try {
+      await apiLogout();
+      setUser(null);
+    } catch (err) {
+      console.error("❌ Error al cerrar sesión:", err.message);
+    }
   };
 
   return (
