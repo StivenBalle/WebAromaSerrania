@@ -46,7 +46,6 @@ Thumbs.db
 *.bak
 
 # 🚀 Archivos de deploy locales
-dist/
 build/
 
 # ⚙️ Visual Studio Code u otros IDEs
