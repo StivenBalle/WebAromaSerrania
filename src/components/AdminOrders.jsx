@@ -3,6 +3,7 @@ import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import Cafetera from "../components/Cafetera.jsx";
 import Swal from "sweetalert2";
+import { getOrders } from "../api.js";
 import "../App.css";
 
 const AdminOrders = () => {
@@ -38,13 +39,7 @@ const AdminOrders = () => {
 
   const fetchOrders = async () => {
     try {
-      const res = await fetch("http://localhost:3000/api/admin/orders", {
-        credentials: "include",
-      });
-      if (!res.ok) {
-        throw new Error("Error al cargar órdenes");
-      }
-      const data = await res.json();
+      const data = await getOrders();
       console.log("Órdenes cargadas:", data);
       setOrders(data.orders);
       setFilteredOrders(data.orders);
@@ -65,12 +60,12 @@ const AdminOrders = () => {
     );
     setFilteredOrders(filtered);
     setCurrentPage(1);
-    setTimeout(() => setSearchLoading(false), 500); // Simula un delay para el spinner
+    setTimeout(() => setSearchLoading(false), 500);
   };
 
   const handleReset = () => {
     setSearchTerm("");
-    setFilteredOrders(orders); // Vuelve a mostrar todas las órdenes
+    setFilteredOrders(orders);
     setCurrentPage(1);
   };
 

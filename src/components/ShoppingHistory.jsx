@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useAuth } from "../context/AuthContext";
 import Swal from "sweetalert2";
+import { getHistorial } from "../api.js";
 import "../App.css";
 
 const ShoppingHistory = ({ isOpen, toggleHistory }) => {
@@ -14,14 +15,8 @@ const ShoppingHistory = ({ isOpen, toggleHistory }) => {
     const fetchHistory = async () => {
       setLoading(true);
       try {
-        const res = await fetch("http://localhost:3000/api/historial", {
-          credentials: "include",
-        });
-        if (!res.ok) {
-          throw new Error(`Error ${res.status}: ${res.statusText}`);
-        }
-        const data = await res.json();
-        console.log("Historial cargado:", JSON.stringify(data, null, 2)); // Depuración
+        const data = await getHistorial();
+        console.log("Historial cargado:", JSON.stringify(data, null, 2));
         setCompras(data.compras);
       } catch (err) {
         console.error("❌ Error fetching history:", err.message);

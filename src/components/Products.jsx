@@ -3,6 +3,7 @@ import Swal from "sweetalert2";
 import logoCafe from "../assets/LogoCafe.png";
 import bolsaCafe from "../assets/Bolsa_café.png";
 import { useAuth } from "../context/AuthContext";
+import { getConfig, getProducts, getProfile, createCheckout } from "../api";
 import "../styles/header.css";
 
 const Products = () => {
@@ -10,33 +11,20 @@ const Products = () => {
   const [products, setProducts] = useState([]);
   const [prices, setPrices] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [lastProductCount, setLastProductCount] = useState(0); // 🔹 Para el polling
+  const [lastProductCount, setLastProductCount] = useState(0);
 
-  // 🔹 Cargar productos y precios desde el backend (inicialización como en tu JS puro)
   useEffect(() => {
     async function fetchProducts() {
       try {
         console.log("📡 Obteniendo configuración...");
-        const configRes = await fetch("/api/config");
-        if (!configRes.ok) throw new Error("Error en /api/config");
-        const config = await configRes.json();
+        await getConfig();
 
         console.log("📦 Obteniendo productos...");
-        const res = await fetch("/api/products", {
-          credentials: "include",
-        });
-        if (!res.ok) throw new Error("Error cargando productos");
-        const data = await res.json();
-        console.log(
-          "✅ Productos obtenidos:",
-          data.products.length,
-          "productos"
-        );
+        const data = await getProducts();
 
         setProducts(data.products);
         setPrices(data.prices);
 
-        // 🔹 Contar productos activos iniciales (como en tu JS puro)
         const activeCount = data.prices.filter((el) => {
           const product = data.products.find((p) => p.id === el.product);
           return el.active && product?.active;
@@ -52,11 +40,10 @@ const Products = () => {
 
     fetchProducts();
 
-    // 🔹 Iniciar polling para nuevos productos (como en tu JS puro)
+    // 🔹 Iniciar polling para nuevos productos
     const intervalId = setInterval(async () => {
       try {
-        const res = await fetch("/api/products");
-        const data = await res.json();
+        const data = await getProducts();
         const currentActiveCount = data.prices.filter((el) => {
           const product = data.products.find((p) => p.id === el.product);
           return el.active && product?.active;
@@ -80,25 +67,22 @@ const Products = () => {
       } catch (err) {
         console.warn("Error al verificar productos nuevos:", err.message);
       }
-    }, 60000); // 🔹 Cada 60 segundos, como en tu JS puro
+    }, 60000);
 
-    return () => clearInterval(intervalId); // Limpiar el interval al desmontar
+    return () => clearInterval(intervalId);
   }, [lastProductCount]);
 
-  // 🔹 Verificar si el usuario está autenticado (adaptado de tu JS puro)
+  // 🔹 Verificar si el usuario está autenticado
   const isUserLoggedIn = async () => {
     try {
-      const res = await fetch("/api/auth/profile", {
-        method: "GET",
-        credentials: "include",
-      });
-      return res.ok;
+      const res = await getProfile();
+      return !!res;
     } catch {
       return false;
     }
   };
 
-  // 🔹 Manejar click en producto y checkout (adaptado de tu JS puro)
+  // 🔹 Manejar click en producto y checkout
   const handleCheckout = async (priceId) => {
     const loggedIn = await isUserLoggedIn();
     if (!loggedIn) {
@@ -108,22 +92,13 @@ const Products = () => {
         text: "Debes iniciar sesión para comprar.",
         confirmButtonText: "Iniciar sesión",
       }).then(() => {
-        openAuthModal(); // Abre el modal de login
+        openAuthModal();
       });
       return;
     }
 
     try {
-      const response = await fetch("/api/create-checkout-session", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-        body: JSON.stringify({ priceId }),
-      });
-
-      if (!response.ok) throw new Error("Error creando sesión de pago");
-
-      const session = await response.json();
+      const session = await createCheckout(priceId);
       window.location.href = session.url;
     } catch (err) {
       console.error("❌ Error Stripe:", err.message);
@@ -133,7 +108,7 @@ const Products = () => {
 
   if (loading) return <p>Cargando productos...</p>;
 
-  // 🔹 Filtrar precios activos y verificar si hay productos (como en tu JS puro)
+  // 🔹 Filtrar precios activos y verificar si hay productos
   const activePrices = prices.filter((price) => {
     const product = products.find((p) => p.id === price.product);
     return price.active && product?.active;

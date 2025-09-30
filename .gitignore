@@ -32,6 +32,8 @@ package-lock.json
 npm-debug.log
 yarn.lock
 Datos_Prueba.txt
+.env.production
+.env.development
 
 # 💻 Sistemas operativos
 .DS_Store

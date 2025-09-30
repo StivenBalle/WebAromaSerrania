@@ -5,7 +5,7 @@ import Swal from "sweetalert2";
 import "../styles/header.css";
 
 const LoginForm = ({ switchToSignup }) => {
-  const { login, closeAuthModal } = useContext(AuthContext); // O usa useAuth() si lo importas
+  const { login, closeAuthModal } = useContext(AuthContext);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
