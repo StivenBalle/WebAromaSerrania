@@ -305,10 +305,8 @@ app.post("/api/create-checkout-session", verifyToken, async (req, res) => {
 });
 
 // Para todas las rutas que no sean API, servir el index.html del frontend
-app.get("*", (req, res) => {
-  if (!req.url.startsWith("/api/")) {
-    res.sendFile(path.join(frontendPath, "index.html"));
-  }
+app.get("/*", (req, res) => {
+  res.sendFile(path.join(frontendPath, "index.html"));
 });
 
 // --- 404 solo para API ---
