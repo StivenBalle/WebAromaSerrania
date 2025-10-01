@@ -33,12 +33,16 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const frontendPath = path.join(__dirname, "../../dist");
+console.log("🔍 Ruta del frontend:", frontendPath);
+console.log(
+  "🔍 Contenido del directorio:",
+  require("fs").readdirSync(frontendPath)
+);
 
 dotenv.config({ path: path.join(__dirname, ".env") });
 const stripe = new Stripe(STRIPE_SECRET_KEY);
 const twilioClient = Twilio(ACCOUNT_SSD, AUTH_TOKEN);
 const app = express();
-app.use(express.static(frontendPath));
 
 // --- Middlewares globales ---
 app.use(
@@ -303,6 +307,8 @@ app.post("/api/create-checkout-session", verifyToken, async (req, res) => {
     res.status(500).json({ error: "No se pudo crear la sesión de pago" });
   }
 });
+
+app.use(express.static(frontendPath));
 
 // Para todas las rutas que no sean API, servir el index.html del frontend
 app.get("/*", (req, res) => {
