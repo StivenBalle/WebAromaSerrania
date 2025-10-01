@@ -7,7 +7,15 @@ export default defineConfig({
   build: {
     outDir: "../dist",
     emptyOutDir: true,
+    // CONFIGURACIÓN CLAVE PARA RENDER
+    rollupOptions: {
+      input: {
+        main: "./index.html",
+      },
+    },
   },
+  // CONFIGURACIÓN PARA PRODUCCIÓN
+  base: "./", // Esto es IMPORTANTE para rutas relativas
   server: {
     proxy: {
       "/api": {
