@@ -4,6 +4,7 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import passport from "passport";
 import path from "path";
+import fs from "fs";
 import { fileURLToPath } from "url";
 import Stripe from "stripe";
 import errorHandler from "../backend/backendSecundary/middleware/errorHandler.js";
@@ -32,8 +33,45 @@ import {
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const frontendPath = path.join(__dirname, "../../dist");
+const frontendPath = path.join(__dirname, "../../../dist");
 console.log("🔍 Ruta del frontend:", frontendPath);
+console.log("🔍 Directorio actual:", process.cwd());
+console.log("🔍 __dirname:", __dirname);
+console.log("🔍 Ruta del frontend intentada:", frontendPath);
+
+const possiblePaths = [
+  path.join(__dirname, "../../../dist"),
+  path.join(process.cwd(), "../dist"),
+  "/opt/render/project/dist",
+  path.join(process.cwd(), "dist"),
+  path.join(__dirname, "../../dist"),
+];
+
+let actualFrontendPath = null;
+for (const testPath of possiblePaths) {
+  try {
+    if (
+      fs.existsSync(testPath) &&
+      fs.existsSync(path.join(testPath, "index.html"))
+    ) {
+      actualFrontendPath = testPath;
+      console.log("✅ Ruta encontrada:", testPath);
+      const files = fs.readdirSync(testPath);
+      console.log("📁 Archivos en dist:", files);
+      break;
+    }
+  } catch (error) {
+    console.log("❌ Ruta no válida:", testPath);
+  }
+}
+
+if (!actualFrontendPath) {
+  console.log("❌ No se encontró el directorio dist con index.html");
+  // Crear una ruta por defecto
+  actualFrontendPath = path.join(process.cwd(), "../dist");
+}
+
+console.log("🎯 Usando ruta:", actualFrontendPath);
 
 dotenv.config({ path: path.join(__dirname, ".env") });
 const stripe = new Stripe(STRIPE_SECRET_KEY);
@@ -304,7 +342,7 @@ app.post("/api/create-checkout-session", verifyToken, async (req, res) => {
   }
 });
 
-app.use(express.static(frontendPath));
+app.use(express.static(actualFrontendPath));
 
 // Para todas las rutas que no sean API, servir el index.html del frontend
 app.get("/", (req, res) => {
@@ -314,11 +352,11 @@ app.get("/", (req, res) => {
 // --- 404 solo para API ---
 app.use((req, res) => {
   if (req.url.startsWith("/api/")) {
-    return res
-      .status(404)
-      .json({ error: `Ruta de API no encontrada: ${req.url}` });
+    return next();
   }
-  res.sendFile(path.join(frontendPath, "index.html"));
+  const indexPath = path.join(actualFrontendPath, "index.html");
+  console.log(`📄 Sirviendo index.html para ruta: ${req.url}`);
+  res.sendFile(indexPath);
 });
 
 app.use(errorHandler);
