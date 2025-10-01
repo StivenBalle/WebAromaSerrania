@@ -2,6 +2,17 @@ const API_URL = import.meta.env.VITE_API_URL;
 
 // 🔹 Cliente genérico
 async function request(path, { method = "GET", body } = {}) {
+  if (!API_URL) {
+    console.error(
+      "❌ API_URL no definida. Variables disponibles:",
+      import.meta.env
+    );
+    throw new Error("Configuración de API no disponible");
+  }
+
+  const url = `${API_URL}${path}`;
+  console.log(`🌐 Fetch: ${method} ${url}`);
+
   const options = {
     method,
     headers: { "Content-Type": "application/json" },
@@ -59,3 +70,5 @@ export const logout = () => post("/api/auth/logout");
 
 export const createCheckout = (priceId) =>
   post("/api/create-checkout-session", { priceId });
+
+export const checkHealth = () => get("/api/health");
