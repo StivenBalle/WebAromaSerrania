@@ -345,18 +345,24 @@ app.post("/api/create-checkout-session", verifyToken, async (req, res) => {
 app.use(express.static(actualFrontendPath));
 
 // Para todas las rutas que no sean API, servir el index.html del frontend
-app.get("/", (req, res) => {
-  res.sendFile(path.join(frontendPath, "index.html"));
-});
-
-// --- 404 solo para API ---
-app.use((req, res) => {
+app.get("*", (req, res, next) => {
   if (req.url.startsWith("/api/")) {
     return next();
   }
-  const indexPath = path.join(actualFrontendPath, "index.html");
   console.log(`📄 Sirviendo index.html para ruta: ${req.url}`);
-  res.sendFile(indexPath);
+  res.sendFile(path.join(actualFrontendPath, "index.html"));
+});
+
+// --- 404 solo para API ---
+app.use((req, res, next) => {
+  // ✅ AÑADIDO el parámetro 'next'
+  if (req.url.startsWith("/api/")) {
+    return res
+      .status(404)
+      .json({ error: `Ruta de API no encontrada: ${req.url}` });
+  }
+  // Si no es API, ya debería haber sido manejada por el middleware anterior
+  next();
 });
 
 app.use(errorHandler);
@@ -365,4 +371,6 @@ app.use(errorHandler);
 const PORT = PORTG || 3000;
 app.listen(PORT, () => {
   console.log(`🚀 Servidor backend corriendo en http://localhost:${PORT}`);
+  console.log(`📁 Frontend servido desde: ${actualFrontendPath}`);
+  console.log(`🌐 FRONTEND_URL: ${FRONTEND_URL}`);
 });
