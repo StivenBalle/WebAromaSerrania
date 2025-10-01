@@ -31,10 +31,14 @@ import {
 // --- Configuración inicial ---
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
+const frontendPath = path.join(__dirname, "../../dist");
+
 dotenv.config({ path: path.join(__dirname, ".env") });
 const stripe = new Stripe(STRIPE_SECRET_KEY);
 const twilioClient = Twilio(ACCOUNT_SSD, AUTH_TOKEN);
 const app = express();
+app.use(express.static(frontendPath));
 
 // --- Middlewares globales ---
 app.use(
@@ -300,6 +304,13 @@ app.post("/api/create-checkout-session", verifyToken, async (req, res) => {
   }
 });
 
+// Para todas las rutas que no sean API, servir el index.html del frontend
+app.get("*", (req, res) => {
+  if (!req.url.startsWith("/api/")) {
+    res.sendFile(path.join(frontendPath, "index.html"));
+  }
+});
+
 // --- 404 solo para API ---
 app.use((req, res) => {
   if (req.url.startsWith("/api/")) {
@@ -307,7 +318,7 @@ app.use((req, res) => {
       .status(404)
       .json({ error: `Ruta de API no encontrada: ${req.url}` });
   }
-  res.status(404).send("Página no encontrada");
+  res.sendFile(path.join(frontendPath, "index.html"));
 });
 
 app.use(errorHandler);
