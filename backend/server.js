@@ -34,10 +34,6 @@ const __dirname = path.dirname(__filename);
 
 const frontendPath = path.join(__dirname, "../../dist");
 console.log("🔍 Ruta del frontend:", frontendPath);
-console.log(
-  "🔍 Contenido del directorio:",
-  require("fs").readdirSync(frontendPath)
-);
 
 dotenv.config({ path: path.join(__dirname, ".env") });
 const stripe = new Stripe(STRIPE_SECRET_KEY);
@@ -311,7 +307,7 @@ app.post("/api/create-checkout-session", verifyToken, async (req, res) => {
 app.use(express.static(frontendPath));
 
 // Para todas las rutas que no sean API, servir el index.html del frontend
-app.get("/*", (req, res) => {
+app.get("/", (req, res) => {
   res.sendFile(path.join(frontendPath, "index.html"));
 });
 
