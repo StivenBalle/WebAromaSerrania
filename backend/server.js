@@ -33,11 +33,8 @@ import {
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const frontendPath = path.join(__dirname, "../../../dist");
-console.log("🔍 Ruta del frontend:", frontendPath);
-console.log("🔍 Directorio actual:", process.cwd());
-console.log("🔍 __dirname:", __dirname);
-console.log("🔍 Ruta del frontend intentada:", frontendPath);
+const actualFrontendPath = "/opt/render/project/src/dist";
+console.log("🎯 Ruta del frontend:", actualFrontendPath);
 
 const possiblePaths = [
   path.join(__dirname, "../../../dist"),
@@ -47,31 +44,13 @@ const possiblePaths = [
   path.join(__dirname, "../../dist"),
 ];
 
-let actualFrontendPath = null;
-for (const testPath of possiblePaths) {
-  try {
-    if (
-      fs.existsSync(testPath) &&
-      fs.existsSync(path.join(testPath, "index.html"))
-    ) {
-      actualFrontendPath = testPath;
-      console.log("✅ Ruta encontrada:", testPath);
-      const files = fs.readdirSync(testPath);
-      console.log("📁 Archivos en dist:", files);
-      break;
-    }
-  } catch (error) {
-    console.log("❌ Ruta no válida:", testPath);
-  }
+// Verificar que existe
+if (fs.existsSync(actualFrontendPath)) {
+  console.log("✅ Directorio dist existe");
+  console.log("📁 Archivos:", fs.readdirSync(actualFrontendPath));
+} else {
+  console.log("❌ Directorio dist NO existe");
 }
-
-if (!actualFrontendPath) {
-  console.log("❌ No se encontró el directorio dist con index.html");
-  // Crear una ruta por defecto
-  actualFrontendPath = path.join(process.cwd(), "../dist");
-}
-
-console.log("🎯 Usando ruta:", actualFrontendPath);
 
 dotenv.config({ path: path.join(__dirname, ".env") });
 const stripe = new Stripe(STRIPE_SECRET_KEY);
@@ -344,25 +323,22 @@ app.post("/api/create-checkout-session", verifyToken, async (req, res) => {
 
 app.use(express.static(actualFrontendPath));
 
-// Para todas las rutas que no sean API, servir el index.html del frontend
-app.get("*", (req, res, next) => {
-  if (req.url.startsWith("/api/")) {
-    return next();
-  }
-  console.log(`📄 Sirviendo index.html para ruta: ${req.url}`);
+app.get("/", (req, res) => {
   res.sendFile(path.join(actualFrontendPath, "index.html"));
 });
 
-// --- 404 solo para API ---
-app.use((req, res, next) => {
-  // ✅ AÑADIDO el parámetro 'next'
+// Middleware final para cualquier otra ruta no-API
+app.use((req, res) => {
   if (req.url.startsWith("/api/")) {
+    // Rutas API no encontradas
     return res
       .status(404)
       .json({ error: `Ruta de API no encontrada: ${req.url}` });
   }
-  // Si no es API, ya debería haber sido manejada por el middleware anterior
-  next();
+
+  // Cualquier otra ruta (para React Router)
+  console.log(`📄 Sirviendo SPA para: ${req.url}`);
+  res.sendFile(path.join(actualFrontendPath, "index.html"));
 });
 
 app.use(errorHandler);
