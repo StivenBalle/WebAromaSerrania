@@ -22,8 +22,8 @@
     "stripe": "^18.5.0",
     "sweetalert2": "^11.23.0",
     "twilio": "^5.9.0",
-    "react": "^19.1.1",
-    "react-dom": "^19.1.1",
+    "react": "^19.2.3",
+    "react-dom": "^19.2.3",
     "react-router-dom": "^7.9.1",
     "vite": "^7.1.2",
     "@vitejs/plugin-react": "^5.0.0"

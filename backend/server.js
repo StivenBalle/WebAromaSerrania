@@ -33,7 +33,7 @@ import {
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const actualFrontendPath = "/opt/render/project/src/dist";
+const actualFrontendPath = path.join(process.cwd(), "frontend", "dist");
 console.log("🎯 Ruta del frontend:", actualFrontendPath);
 
 const possiblePaths = [
